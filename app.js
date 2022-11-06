@@ -24,9 +24,6 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-//function needs to sort the array from least to greatest and then remove duplicates
-//then build the balanced binary search tree
-
 //used with sort as the compare function. That way it doesn't conver to strings for comparison.
 const compare = (a, b) => a - b;
 //captures only unique elements from the given array utilizing ES6 Sets
@@ -91,6 +88,21 @@ const createBST = (array, start = 0, end = array.length - 1) => {
     createBST(array, start, mid - 1),
     createBST(array, mid + 1, end)
   );
+  return root;
+};
+
+const findNode = (root, value) => {
+  if (root === null) {
+    return root;
+  } else if (value === root) {
+    return root;
+  } else {
+    if (value < root.data) {
+      root = findNode(root.left, value);
+    } else if (value > root.data) {
+      root = findNode(root.right, value);
+    }
+  }
   return root;
 };
 
