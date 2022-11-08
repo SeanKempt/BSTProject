@@ -140,11 +140,14 @@ const levelOrder = (root, someFunction = null) => {
 //D, L, R
 //leaving as someFunction until I know what function i'm passing to this function
 // need to figure out how to only return the array without having to declare it outside of the function.
-const preOrder = (root, someFunction, results = []) => {
-  if (root === null) return;
-  results.push(root.data);
-  preOrder(root.left, results);
-  preOrder(root.right, results);
+const preOrder = (root, results = [], callbackFn) => {
+  if (root === null) {
+    return;
+  } else {
+    results.push(root.data);
+    preOrder(root.left, results);
+    preOrder(root.right, results);
+  }
   if (results.length > 0) return results;
 };
 
@@ -166,4 +169,3 @@ prettyPrint(testTree.root);
 prettyPrint(testOak.root);
 let treeRoot = testTree.root;
 let oakRoot = testOak.root;
-console.log(treeRoot);
