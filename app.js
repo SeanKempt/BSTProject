@@ -166,10 +166,4 @@ prettyPrint(testTree.root);
 prettyPrint(testOak.root);
 let treeRoot = testTree.root;
 let oakRoot = testOak.root;
-
-const checkTrue = (root) => {
-  if (oakRoot.left === null) {
-    console.log(true);
-  }
-  console.log(oakRoot.left);
-};
+console.log(treeRoot);
