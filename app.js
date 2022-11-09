@@ -11,18 +11,22 @@ class Tree {
     this.array = array;
     this.root = buildTree(array);
   }
+  prettyPrint = (node = this.root, prefix = '', isLeft = true) => {
+    if (node.right !== null) {
+      this.prettyPrint(
+        node.right,
+        `${prefix}${isLeft ? '│   ' : '    '}`,
+        false
+      );
+    }
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    if (node.left !== null) {
+      this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
+  };
 }
 
 //function provided by the odin project that prints to the console the tree structure
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-  }
-  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-  }
-};
 
 //used with sort as the compare function. That way it doesn't conver to strings for comparison.
 const compare = (a, b) => a - b;
@@ -138,8 +142,6 @@ const levelOrder = (root, someFunction = null) => {
 };
 
 //D, L, R
-//leaving as someFunction until I know what function i'm passing to this function
-// need to figure out how to only return the array without having to declare it outside of the function.
 const preOrder = (root, results = [], callbackFn) => {
   if (root === null) {
     return;
@@ -233,9 +235,3 @@ const reBalance = (root) => {
 
 const testTree = new Tree([2, 5, 10, 20, 5, 3, 100, 44, 100, 6]);
 const testOak = new Tree([30, 50, 70, 60, 80, 40]);
-
-console.log(testTree);
-prettyPrint(testTree.root);
-prettyPrint(testOak.root);
-let treeRoot = testTree.root;
-let oakRoot = testOak.root;
