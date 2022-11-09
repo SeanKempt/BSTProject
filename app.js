@@ -144,7 +144,7 @@ const preOrder = (root, results = [], callbackFn) => {
   if (root === null) {
     return;
   } else {
-    results.push(root.data);
+    callbackFn ? callbackFn(root.data) : results.push(root.data);
     preOrder(root.left, results);
     preOrder(root.right, results);
   }
@@ -152,13 +152,83 @@ const preOrder = (root, results = [], callbackFn) => {
 };
 
 //L, D, R
-const inOrder = (root) => {
-  const results = [];
+const inOrder = (root, results = [], callbackFn) => {
+  if (root === null) {
+    return;
+  } else {
+    inOrder(root.left, results);
+    callbackFn ? callbackFn(root.data) : results.push(root.data);
+    inOrder(root.right, results);
+  }
+  return results;
 };
 
 //L, R, D
-const postOrder = (root) => {
-  const results = [];
+const postOrder = (root, results = [], callbackFn) => {
+  if (root === null) {
+    return;
+  } else {
+    postOrder(root.left, results);
+    postOrder(root.right, results);
+    callbackFn ? callbackFn(root.data) : results.push(root.data);
+  }
+  return results;
+};
+
+const height = (root) => {
+  if (root === null) {
+    return 0;
+  }
+  let leftHeight = height(root.left);
+  let rightHeight = height(root.right);
+  return Math.max(leftHeight, rightHeight) + 1;
+};
+
+const depthRec = (root, node) => {
+  if (root === null) {
+    return -1;
+  }
+
+  let depth = -1;
+  if (
+    root.data === node ||
+    (depth = depthRec(root.left, node)) >= 0 ||
+    (depth = depthRec(root.right, node)) >= 0
+  ) {
+    return depth + 1;
+  }
+};
+
+const isBalanced = (root) => {
+  let verdict;
+  if (root === null) {
+    return root;
+  } else {
+    let leftHeight = height(root.left);
+    let rightHeight = height(root.right);
+    if (leftHeight - rightHeight >= 1 || rightHeight - leftHeight >= 1) {
+      verdict = false;
+    } else {
+      verdict = true;
+    }
+  }
+  return verdict;
+};
+
+const treeToArray = (root, xArray = []) => {
+  if (root === null) {
+    return root;
+  } else {
+    xArray.push(root.data);
+    if (root.left !== null) treeToArray(root.left, xArray);
+    if (root.right !== null) treeToArray(root.right, xArray);
+  }
+  return xArray;
+};
+
+const reBalance = (root) => {
+  let tree = new Tree(treeToArray(root));
+  return tree.root;
 };
 
 const testTree = new Tree([2, 5, 10, 20, 5, 3, 100, 44, 100, 6]);
