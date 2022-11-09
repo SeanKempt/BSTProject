@@ -11,6 +11,7 @@ class Tree {
     this.array = array;
     this.root = buildTree(array);
   }
+  //function provided by the odin project that prints to the console the tree structure
   prettyPrint = (node = this.root, prefix = '', isLeft = true) => {
     if (node.right !== null) {
       this.prettyPrint(
@@ -24,65 +25,42 @@ class Tree {
       this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
   };
-}
 
-//function provided by the odin project that prints to the console the tree structure
+  minValue = (root = this.root) => {
+    let minv = root.data;
+    while (root.left !== null) {
+      minv = root.left.data;
+      root = root.left;
+    }
+    return minv;
+  };
 
-//used with sort as the compare function. That way it doesn't conver to strings for comparison.
-const compare = (a, b) => a - b;
-//captures only unique elements from the given array utilizing ES6 Sets
-const rmDuplicates = (array) => [...new Set(array)];
-
-const buildTree = (array) => {
-  const filteredArray = rmDuplicates(array).sort(compare);
-  console.log(filteredArray);
-  return createBST(filteredArray);
-};
-
-const minValue = (root) => {
-  let minv = root.data;
-  while (root.left !== null) {
-    minv = root.left.data;
-    root = root.left;
-  }
-  return minv;
-};
-
-const deleteNode = (root, key) => {
-  if (root === null) {
-    return root;
-  }
-
-  if (key > root.data) {
-    root.right = deleteNode(root.right, key);
-  } else if (key < root.data) {
-    root.left = deleteNode(root.left, key);
-  } else {
-    //if node only has one child
-    if (root.left === null) {
-      return root.right;
-    } else if (root.right === null) {
-      return root.left;
+  deleteNode = (key, root = this.root) => {
+    if (root === null) {
+      return root;
     }
 
-    root.data = minValue(root.right);
+    if (key > root.data) {
+      root.right = this.deleteNode(key, root.right);
+    } else if (key < root.data) {
+      root.left = this.deleteNode(key, root.left);
+    } else {
+      //if node only has one child
+      if (root.left === null) {
+        return root.right;
+      } else if (root.right === null) {
+        return root.left;
+      }
 
-    root.right = deleteNode(root.right, root.data);
-  }
-  return root;
-};
+      root.data = minValue(root.right);
 
-const insertValue = (root, key) => {
-  if (root === null) return (root = new Node(key));
-  if (key < root.data) {
-    root.left = insertValue(root.left, key);
-  } else if (key > root.data) {
-    root.right = insertValue(root.right, key);
-  }
-  return root;
-};
+      root.right = this.deleteNode(root.data, root.right);
+    }
+    return root;
+  };
+}
 
-const createBST = (array, start = 0, end = array.length - 1) => {
+createBST = (array, start = 0, end = array.length - 1) => {
   if (start > end) {
     return null;
   }
@@ -92,6 +70,25 @@ const createBST = (array, start = 0, end = array.length - 1) => {
     createBST(array, start, mid - 1),
     createBST(array, mid + 1, end)
   );
+  return root;
+};
+
+buildTree = (array) => {
+  //used with sort as the compare function. That way it doesn't conver to strings for comparison.
+  const compare = (a, b) => a - b;
+  //captures only unique elements from the given array utilizing ES6 Sets
+  const rmDuplicates = (array) => [...new Set(array)];
+  const filteredArray = rmDuplicates(array).sort(compare);
+  return createBST(filteredArray);
+};
+
+const insertValue = (root, key) => {
+  if (root === null) return (root = new Node(key));
+  if (key < root.data) {
+    root.left = insertValue(root.left, key);
+  } else if (key > root.data) {
+    root.right = insertValue(root.right, key);
+  }
   return root;
 };
 
