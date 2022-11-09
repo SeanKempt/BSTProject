@@ -209,7 +209,7 @@ class Tree {
   };
 }
 
-createBST = (array, start = 0, end = array.length - 1) => {
+const createBST = (array, start = 0, end = array.length - 1) => {
   if (start > end) {
     return null;
   }
@@ -222,7 +222,7 @@ createBST = (array, start = 0, end = array.length - 1) => {
   return root;
 };
 
-buildTree = (array) => {
+const buildTree = (array) => {
   //used with sort as the compare function. That way it doesn't conver to strings for comparison.
   const compare = (a, b) => a - b;
   //captures only unique elements from the given array utilizing ES6 Sets
@@ -231,5 +231,41 @@ buildTree = (array) => {
   return createBST(filteredArray);
 };
 
-const testTree = new Tree([2, 5, 10, 20, 5, 3, 100, 44, 100, 6]);
-const testOak = new Tree([30, 50, 70, 60, 80, 40]);
+const testTree = new Tree([
+  6, 3, 3, 5, 5, 10, 20, 30, 50, 100, 80, 60, 9, 22, 90,
+]);
+
+const printStuff = () => {
+  let level = testTree.levelOrder();
+  console.log(`This is level order:`);
+  console.log(level);
+  console.log(`This is pre-order:`);
+  let pre = testTree.preOrder();
+  console.log(pre);
+  console.log(`This is post order:`);
+  let post = testTree.postOrder();
+  console.log(post);
+  console.log(`This is in order: `);
+  let inordernodes = testTree.inOrder();
+  console.log(inordernodes);
+};
+
+//created new tree
+testTree.prettyPrint();
+//check if tree is balanced
+console.log(`is the tree balanced? ${testTree.isBalanced()}`);
+//print out in level,pre,post,in order
+printStuff();
+//unbalancing the tree by adding values into the tree
+console.log(`Unbalancing the tree - hang on!`);
+testTree.insertValue(1000);
+testTree.insertValue(10000);
+testTree.insertValue(1000000);
+testTree.prettyPrint();
+//confirm if tree is unbalanced
+console.log(`is the tree balanced? ${testTree.isBalanced()}`);
+//re-balance the tree
+console.log(`Re-balancing the tree!`);
+testTree.reBalance();
+testTree.prettyPrint();
+printStuff();
